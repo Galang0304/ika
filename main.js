@@ -40,14 +40,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
         
-        // Lightbox event listeners
+        // Enhanced lightbox event listeners
         closeBtn.addEventListener('click', closeLightbox);
+        closeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            closeLightbox();
+        });
+        
         prevBtn.addEventListener('click', showPrevImage);
         nextBtn.addEventListener('click', showNextImage);
         
         // Close lightbox when clicking overlay
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+        
+        // Enhanced touch support for mobile
+        lightbox.addEventListener('touchend', (e) => {
+            if (e.target === lightbox) {
+                e.preventDefault();
                 closeLightbox();
             }
         });
@@ -66,6 +79,47 @@ document.addEventListener('DOMContentLoaded', function() {
         currentImageIndex = index;
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Force close button visibility
+        setTimeout(() => {
+            const closeButton = document.getElementById('close-btn');
+            if (closeButton) {
+                closeButton.style.cssText = `
+                    position: fixed !important;
+                    top: 20px !important;
+                    right: 20px !important;
+                    z-index: 999999 !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    display: flex !important;
+                    pointer-events: auto !important;
+                    background: rgba(255, 107, 157, 0.95) !important;
+                    color: white !important;
+                    width: 50px !important;
+                    height: 50px !important;
+                    border-radius: 50% !important;
+                    font-size: 28px !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+                    backdrop-filter: blur(10px) !important;
+                    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+                    cursor: pointer !important;
+                `;
+                
+                // Mobile specific
+                if (window.innerWidth <= 768) {
+                    closeButton.style.cssText += `
+                        width: 60px !important;
+                        height: 60px !important;
+                        font-size: 32px !important;
+                        top: 15px !important;
+                        right: 15px !important;
+                    `;
+                }
+            }
+        }, 50);
+        
         updateLightboxImage();
         
         // Add entrance animation

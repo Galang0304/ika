@@ -307,14 +307,14 @@ body {
 
 /* Lightbox Controls */
 .lightbox-close {
-    position: absolute;
-    top: -50px;
-    right: 0;
+    position: fixed;
+    top: 30px;
+    right: 30px;
     background: var(--primary-pink);
     color: white;
     border: none;
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
@@ -323,6 +323,12 @@ body {
     justify-content: center;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+    z-index: 10000;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .lightbox-close:hover {
@@ -551,14 +557,28 @@ body {
     }
     
     .lightbox-close {
-        top: 10px;
-        right: 10px;
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        z-index: 10001 !important;
+        background: rgba(255, 107, 157, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        width: 55px !important;
+        height: 55px !important;
+        font-size: 30px !important;
+        box-shadow: 
+            0 8px 25px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 107, 157, 0.3) !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        pointer-events: auto !important;
     }
     
-    .lightbox-counter {
-        bottom: 10px;
-        font-size: 14px;
-        padding: 8px 16px;
+    .lightbox-close:active {
+        transform: scale(0.95);
+        background: rgba(255, 107, 157, 1) !important;
     }
     
     .audio-player {
@@ -601,6 +621,66 @@ body {
         max-height: 80vh;
     }
     
+    /* Enhanced close button for very small screens */
+    .lightbox-close {
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 34px !important;
+        background: rgba(255, 107, 157, 0.98) !important;
+        backdrop-filter: blur(15px);
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        z-index: 10002 !important;
+        box-shadow: 
+            0 8px 25px rgba(0, 0, 0, 0.4),
+            0 0 0 1px rgba(255, 107, 157, 0.3);
+        animation: pulseClose 2s ease-in-out infinite;
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: flex !important;
+        pointer-events: auto !important;
+    }
+    
+    @keyframes pulseClose {
+        0%, 100% { 
+            transform: scale(1);
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 107, 157, 0.3);
+        }
+        50% { 
+            transform: scale(1.05);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.5),
+                0 0 0 2px rgba(255, 107, 157, 0.5);
+        }
+    }
+    
+    .lightbox-nav {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .lightbox-nav.prev {
+        left: 10px;
+    }
+    
+    .lightbox-nav.next {
+        right: 10px;
+    }
+    
+    .lightbox-counter {
+        bottom: 15px;
+        font-size: 16px;
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        border-radius: 25px;
+    }
+    
     .audio-player {
         bottom: 15px;
         right: 15px;
@@ -619,6 +699,65 @@ body {
     .audio-player audio {
         width: 180px;
         height: 40px;
+    }
+}
+
+/* Force close button visibility - Ultimate fix */
+.lightbox.active .lightbox-close {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 999999 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    pointer-events: auto !important;
+    background: rgba(255, 107, 157, 0.95) !important;
+    color: white !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    font-size: 28px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Mobile specific override */
+@media (max-width: 768px) {
+    .lightbox.active .lightbox-close {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 32px !important;
+        top: 15px !important;
+        right: 15px !important;
+        background: rgba(255, 107, 157, 0.98) !important;
+        animation: pulseCloseMobile 2s ease-in-out infinite !important;
+    }
+    
+    @keyframes pulseCloseMobile {
+        0%, 100% { 
+            transform: scale(1) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        }
+        50% { 
+            transform: scale(1.1) !important;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+    }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .lightbox.active .lightbox-close {
+        width: 65px !important;
+        height: 65px !important;
+        font-size: 36px !important;
     }
 }
 
