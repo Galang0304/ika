@@ -15,11 +15,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Gallery state
     let currentImageIndex = 0;
     const images = Array.from(galleryItems).map(item => {
+        // Support for both img and picture elements
+        const picture = item.querySelector('picture');
         const img = item.querySelector('img');
-        return {
-            src: img.src,
-            alt: img.alt
-        };
+        
+        if (picture) {
+            const source = picture.querySelector('source[srcset]');
+            return {
+                src: source ? source.srcset : img.src,
+                fallback: img.src,
+                alt: img.alt
+            };
+        } else {
+            return {
+                src: img.src,
+                fallback: img.src,
+                alt: img.alt
+            };
+        }
     });
     
     // Initialize gallery
